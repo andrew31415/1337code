@@ -26,6 +26,7 @@ class ListNode:
     def __str__(self) -> str:
         return f"ListNode{{val: {self.val}, next: {self.next}}}"
 
+
 class SinglyLinkedList:
     """Contains a singly linked list of ListNode type elements.
 
@@ -53,7 +54,7 @@ class SinglyLinkedList:
         """
         
         self.list = None
-        
+
         for val in val_list[::-1]:
             self.list = ListNode(val, self.list)
 
@@ -62,7 +63,6 @@ class SinglyLinkedList:
 
     def __str__(self) -> str:
         return f"SinglyLinkedList{{list: {self.list}}}"
-
 
 # ceva = ListNode(val=10, next=None)
 # print(ceva.val)
