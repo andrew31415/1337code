@@ -1,6 +1,7 @@
 """OOP implementation of Lists.
 """
 
+
 class ListNode:
     """An object containing a value and an identifier to another object of the
     same ListNode type.
@@ -56,10 +57,10 @@ class SinglyLinkedList:
             Sequence of objects to be stored in the list, by default []
         """
         self._length: int = 0
-        self.list_head: ListNode = None
+        self.list_head = None
 
         if not hasattr(val_list, "__getitem__"):
-            #TODO: use logger
+            # TODO: use logger
             print(f"Trying to create an SLL with a non iterable object {val_list=}")
             self.list_head = ListNode(val_list, None)
             self._length = 1
@@ -69,19 +70,19 @@ class SinglyLinkedList:
             self.list_head = ListNode(val, self.list_head)
             self._length += 1
 
-    def add(self, list_node: ListNode):
+    def add(self, list_node):
         """Adds a new element at the end of the list.
 
         Parameters
         ----------
-        list_node : ListNode
-            Contains an object and an identifier.
+        list_node
+            Contains a ListNode object.
 
         Returns
         -------
         None
         """
-        list_end: ListNode = self.list_head
+        list_end = self.list_head
 
         while list_end.next:
             list_end = list_end.next
@@ -103,14 +104,12 @@ class SinglyLinkedList:
         None
         """
         while nodes_to_pop:
-            try:
-                self.list_head = self.list_head.next
-                nodes_to_pop -= 1
-                self._length -= 1
-                print(self)
-            except AttributeError:
-                print(f"Trying to pop from an empty list: {self.list_head=}")
-                raise
+            if (self.list_head is None) and nodes_to_pop:
+                raise AttributeError(f"Trying to pop from an empty list: {self.list_head=}")
+
+            self.list_head = self.list_head.next
+            nodes_to_pop -= 1
+            self._length -= 1
 
     @property
     def length(self) -> int:
