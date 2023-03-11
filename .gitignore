@@ -1,5 +1,11 @@
+.coverage
 .mypy_cache
 .pytest_cache
-.coverage
+.tox
 leetutils/__pycache__
 tests/__pycache__
+leetcode.egg-info/dependency_links.txt
+leetcode.egg-info/PKG-INFO
+leetcode.egg-info/requires.txt
+leetcode.egg-info/SOURCES.txt
+leetcode.egg-info/top_level.txt

@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 pytest = "*"
+pytest-html = "==3.2.0"
+tox = "==4.4.6"
 
 [dev-packages]
 
