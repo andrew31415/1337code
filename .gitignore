@@ -1,0 +1,5 @@
+.mypy_cache
+.pytest_cache
+.coverage
+leetutils/__pycache__
+tests/__pycache__

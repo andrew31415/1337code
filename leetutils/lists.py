@@ -2,7 +2,7 @@
 """
 
 
-class ListNode:
+class ListNode(object):
     """An object containing a value and an identifier to another object of the
     same ListNode type.
     """
@@ -22,7 +22,7 @@ class ListNode:
         # TODO: maybe raise if is not instance of same type
         # if not next and not isinstance(next, ListNode):
         #     raise TypeError(f"Element with {val=} doesn't have a valid next ")
-        self.next: object = next
+        self.next: ListNode = next
 
     def __repr__(self) -> str:
         return f"ListNode{{val: {self.val}, next: {self.next}}}"
@@ -31,7 +31,7 @@ class ListNode:
         return f"ListNode{{val: {self.val}, next: {self.next}}}"
 
 
-class SinglyLinkedList:
+class SinglyLinkedList(object):
     """Contains a singly linked list of ListNode type elements.
 
     Notes
@@ -57,11 +57,11 @@ class SinglyLinkedList:
             Sequence of objects to be stored in the list, by default []
         """
         self._length: int = 0
-        self.list_head = None
+        self.list_head: ListNode = ListNode()
 
         if not hasattr(val_list, "__getitem__"):
             # TODO: use logger
-            print(f"Trying to create an SLL with a non iterable object {val_list=}")
+            print(f"Trying to create an SLL with a non indexable object {val_list=}")
             self.list_head = ListNode(val_list, None)
             self._length = 1
             return
@@ -70,13 +70,40 @@ class SinglyLinkedList:
             self.list_head = ListNode(val, self.list_head)
             self._length += 1
 
-    def add(self, list_node):
+    def add_node(self, new_node_value: object) -> None:
         """Adds a new element at the end of the list.
 
         Parameters
         ----------
-        list_node
+        new_list_node_value
             Contains a ListNode object.
+
+        Returns
+        -------
+        None
+        """
+        list_end = self.list_head
+
+        if list_end.val is None and self.length:
+            list_end.val = new_node_value
+            return
+
+        while list_end.next:
+            list_end = list_end.next
+
+        list_end.next = ListNode(val=new_node_value, next=None)
+
+        self._length += 1
+
+    def add_nodes(self, new_nodes_values: object) -> None:
+        """Add new nodes at the end of the list.
+
+        Parameters
+        ----------
+        new_nodes_values : object
+            Iterable object with values that will become `ListNode` object in
+            the list. If it's not iterable then it will be added as a single
+            node in the list.
 
         Returns
         -------
@@ -87,11 +114,19 @@ class SinglyLinkedList:
         while list_end.next:
             list_end = list_end.next
 
-        list_end.next = ListNode(val=list_node, next=None)
+        if hasattr(new_nodes_values, "__iter__"):
+            iterator = iter(new_nodes_values)
 
-        self._length += 1
+            for item in iterator:
+                list_end.next = ListNode(val=item, next=None)
+                self._length += 1
+                list_end = list_end.next
 
-    def pop_left(self, nodes_to_pop: int):
+        else:
+            print("Object is not iterable. Adding it as a single node instead.")
+            self.add_node(new_node_value=new_nodes_values)
+
+    def pop_left(self, nodes_to_pop: int) -> None:
         """Removes the first element from the list.
 
         Parameters
@@ -104,7 +139,7 @@ class SinglyLinkedList:
         None
         """
         while nodes_to_pop:
-            if (self.list_head is None) and nodes_to_pop:
+            if nodes_to_pop > self.length or self.list_head is None:
                 raise AttributeError(f"Trying to pop from an empty list: {self.list_head=}")
 
             self.list_head = self.list_head.next
@@ -122,18 +157,43 @@ class SinglyLinkedList:
         """
         return self._length
 
+    @length.setter
+    def length(self, length: int) -> None:
+        """Set's the list's length (e.g. number of elements).
+
+        Parameters
+        ----------
+        length : int
+            Number of linked elements in the linked list.
+        """
+        self._length = length
+
+    def update_length(self):
+        """Iterate over the list and adjust its length property value.
+        """
+        # TODO: implement this (iteration + length.setter)
+        return
+
     def __repr__(self) -> str:
-        return f"SinglyLinkedList{{list: {self.list_head}}}"
+        return f"SinglyLinkedList{{list_head: {self.list_head}}}"
 
     def __str__(self) -> str:
-        return f"SinglyLinkedList{{list: {self.list_head}}}"
+        return f"SinglyLinkedList{{list_head: {self.list_head}}}"
 
 # ceva = ListNode(val=10, next=None)
 # print(ceva.val)
 
-# test_list = SinglyLinkedList(val_list=[1,2,3,4])
+# test_list = SinglyLinkedList()
 # print(test_list)
 
+# test_list.add_node("new_element")
+# # test_list.add_nodes(new_nodes_values=[1, 2, 3])
+# print(test_list)
+# test_list.add_node("new_element")
+# print(test_list)
+
+# test_list.add_nodes(new_nodes_values=[4, 5, 6])
+# print(test_list)
 # test_list.pop_left(nodes_to_pop=test_list.length)
 # print(test_list.list_head)
 
