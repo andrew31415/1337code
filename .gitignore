@@ -3,6 +3,7 @@
 .pytest_cache
 .tox
 leetutils/__pycache__
+utils/__pycache__
 tests/__pycache__
 leetcode.egg-info/dependency_links.txt
 leetcode.egg-info/PKG-INFO
