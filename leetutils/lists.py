@@ -123,6 +123,8 @@ class SinglyLinkedList(object):
         length : int
             Number of linked elements in the linked list.
         """
+        self.update_length()
+        # TODO: if length != self.length: warning: trying to set a different real length of list
         self._length = length
         if self._length < 0:
             raise ValueError("List length cannot be negative.")
@@ -232,7 +234,6 @@ class SinglyLinkedList(object):
         """Iterate over the list and adjust its length property value.
         """
         # TODO: implement this (iteration + length.setter)
-        return
 
 
 class SinglyLinkedListIterator(object):
@@ -252,34 +253,11 @@ class SinglyLinkedListIterator(object):
         return item
 
 
-# ceva = ListNode(val=10, next=None, log_active=True)
-# print(ceva.val)
-
-# test_list = SinglyLinkedList(log_active=False)
+test_list = SinglyLinkedList(log_active=False)
 # print(test_list)
 
-# test_list.add_node("new_element")
+test_list.add_node("new_element")
 # test_list.add_nodes(new_nodes_values=[1, 2, 3])
 # print(test_list)
 
-# test_list_iter = iter(test_list)
-# print(next(test_list_iter) == test_list.list_head.val)
-# print(next(test_list_iter) == test_list.list_head.next.val)
-# print(next(test_list_iter) == test_list.list_head.next.next.val)
-# print(next(test_list_iter) == test_list.list_head.next.next.next.val)
-
-# try:
-#     print(next(test_list_iter))
-# except StopIteration:
-#     print(2)
-
-# test_list.add_node("new_element")
-# print(test_list)
-
 # test_list.add_nodes(new_nodes_values=[4, 5, 6])
-# print(test_list)
-# test_list.pop_left(nodes_to_pop=test_list.length)
-# print(test_list.list_head)
-
-# test_list.pop_left(nodes_to_pop=1)
-# print(test_list.list_head)
