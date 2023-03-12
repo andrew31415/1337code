@@ -3,7 +3,11 @@ requires = ["setuptools>=42.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
-addopts = "--cov=."
+addopts = [
+    "--cov=.",
+    "--cov=mypackage",
+    "--cov-report=term-missing",
+]
 testpaths = [
     "tests",
 ]
