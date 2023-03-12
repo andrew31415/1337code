@@ -32,7 +32,7 @@ class ListNode(object):
         # if next is not None and not isinstance(next, ListNode):
         #     raise TypeError(f"Element with {val=} doesn't have a valid next ")
         self.next: ListNode = next
-        print(f'Created new ListNode: {self}')
+        self.node_logger.info(f'Created new ListNode: {self}')
 
     def __repr__(self) -> str:
         return f"ListNode{{val: {self.val}, next: {self.next}}}"
@@ -79,21 +79,26 @@ class SinglyLinkedList(object):
         self._length: int = 0
         self.list_head: ListNode = ListNode()
 
-        if not hasattr(val_list, "__getitem__"):
+        if val_list is None:
+            self.list_logger.info("Creating an empty SLL.")
+            self._length = 0
+        elif not hasattr(val_list, "__getitem__"):
             self.list_logger.info(f"Creating an SLL with a non indexable object {val_list=}")
             self.list_head = ListNode(val_list, None)
             self._length = 1
-            return
+        else:
+            for val in val_list[::-1]:
+                self.list_head = ListNode(val, self.list_head)
+                self._length += 1
 
-        for val in val_list[::-1]:
-            self.list_head = ListNode(val, self.list_head)
-            self._length += 1
+    def __iter__(self) -> object:
+        return SinglyLinkedListIterator(self.list_head)
 
     def __repr__(self) -> str:
-        return f"SinglyLinkedList{{list_head: {self.list_head}}}"
+        return f"SinglyLinkedList{{list_head: {self.list_head}}}" if self.length else "SinglyLinkedList: Empty List"
 
     def __str__(self) -> str:
-        return f"SinglyLinkedList{{list_head: {self.list_head}}}"
+        return f"SinglyLinkedList{{list_head: {self.list_head}}}" if self.length else "SinglyLinkedList: Empty List"
 
     ############################################################################
     # Properties
@@ -119,6 +124,8 @@ class SinglyLinkedList(object):
             Number of linked elements in the linked list.
         """
         self._length = length
+        if self._length < 0:
+            raise ValueError("List length cannot be negative.")
 
     ############################################################################
     # Class Methods
@@ -151,18 +158,17 @@ class SinglyLinkedList(object):
         """
         list_end = self.list_head
 
-        if list_end.val is None and self.length:
+        if list_end.val is None and self.length == 0:
             self.list_logger.info(f"Updating empty list with value: {new_node_value}")
             list_end.val = new_node_value
             self.list_logger.info(f"Printing list:\n{self}")
-            return
+        else:
+            while list_end.next:
+                list_end = list_end.next
 
-        while list_end.next:
-            list_end = list_end.next
-
-        self.list_logger.info(f"Adding a new ListNode with value: {new_node_value}")
-        list_end.next = ListNode(val=new_node_value, next=None)
-        self.list_logger.info(f"Printing list:\n{self}")
+            self.list_logger.info(f"Adding a new ListNode with value: {new_node_value}")
+            list_end.next = ListNode(val=new_node_value, next=None)
+            self.list_logger.info(f"Printing list:\n{self}")
 
         self._length += 1
 
@@ -229,15 +235,44 @@ class SinglyLinkedList(object):
         return
 
 
+class SinglyLinkedListIterator(object):
+    """Iterator class for the SinglyLinkedList class.
+    """
+    def __init__(self, list_head):
+        self.current = list_head
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if self.current is None:
+            raise StopIteration
+        item = self.current.val
+        self.current = self.current.next
+        return item
+
+
 # ceva = ListNode(val=10, next=None, log_active=True)
 # print(ceva.val)
 
-# test_list = SinglyLinkedList(log_active=True)
+# test_list = SinglyLinkedList(log_active=False)
 # print(test_list)
 
 # test_list.add_node("new_element")
 # test_list.add_nodes(new_nodes_values=[1, 2, 3])
 # print(test_list)
+
+# test_list_iter = iter(test_list)
+# print(next(test_list_iter) == test_list.list_head.val)
+# print(next(test_list_iter) == test_list.list_head.next.val)
+# print(next(test_list_iter) == test_list.list_head.next.next.val)
+# print(next(test_list_iter) == test_list.list_head.next.next.next.val)
+
+# try:
+#     print(next(test_list_iter))
+# except StopIteration:
+#     print(2)
+
 # test_list.add_node("new_element")
 # print(test_list)
 
